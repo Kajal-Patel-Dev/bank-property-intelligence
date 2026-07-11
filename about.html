@@ -1,0 +1,800 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+
+/* HERO */
+
+.about-hero{
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e3a8a
+);
+
+color:white;
+padding:90px 0;
+
+}
+
+
+.about-title{
+
+font-size:48px;
+font-weight:800;
+
+}
+
+
+.about-sub{
+
+font-size:18px;
+color:#dbeafe;
+line-height:1.8;
+
+}
+
+
+
+.hero-card{
+
+background:white;
+border-radius:25px;
+padding:25px;
+box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+}
+
+
+.hero-card img{
+
+width:100%;
+height:350px;
+object-fit:cover;
+border-radius:20px;
+
+}
+
+
+
+
+/* COMMON */
+
+
+.section{
+
+padding:80px 0;
+
+}
+
+
+.heading{
+
+font-size:34px;
+font-weight:800;
+color:#0f172a;
+
+}
+
+
+.text{
+
+color:#64748b;
+line-height:1.8;
+
+}
+
+
+
+
+
+/* FEATURE */
+
+
+.feature-box{
+
+background:white;
+border-radius:20px;
+padding:30px;
+height:100%;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+.feature-box:hover{
+
+transform:translateY(-8px);
+
+}
+
+
+.icon{
+
+width:60px;
+height:60px;
+border-radius:15px;
+
+background:#dbeafe;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:28px;
+margin-bottom:20px;
+
+color:#2563eb;
+
+}
+
+
+
+
+
+/* WORKFLOW */
+
+
+.step{
+
+background:white;
+padding:30px;
+border-radius:18px;
+
+box-shadow:
+0 8px 25px rgba(0,0,0,.08);
+
+}
+
+
+.number{
+
+font-size:40px;
+font-weight:800;
+color:#2563eb;
+
+}
+
+
+
+
+/* SECURITY */
+
+
+.security{
+
+background:#0f172a;
+color:white;
+border-radius:25px;
+padding:60px;
+
+}
+
+
+.security p{
+
+color:#cbd5e1;
+
+}
+
+
+
+
+/* CTA */
+
+
+.cta{
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#0f172a
+);
+
+color:white;
+padding:60px;
+border-radius:25px;
+
+}
+
+
+
+</style>
+
+
+
+<!-- HERO -->
+
+
+<section class="about-hero">
+
+<div class="container">
+
+<div class="row align-items-center">
+
+
+<div class="col-lg-6">
+
+
+<h1 class="about-title">
+
+Smart Property Management
+Platform
+
+</h1>
+
+
+<p class="about-sub mt-4">
+
+A secure digital platform designed for banks
+to manage property assets, valuation,
+agent reviews and operational workflows
+from one centralized system.
+
+</p>
+
+
+<a href="/register"
+class="btn btn-light btn-lg rounded-pill mt-3">
+
+Start Using Platform
+
+</a>
+
+
+</div>
+
+
+
+
+<div class="col-lg-6 mt-4">
+
+
+<div class="hero-card">
+
+
+<img src="{{url_for('static',
+filename='uploads/about-hero.jpg')}}">
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- ABOUT -->
+
+
+<section class="section">
+
+
+<div class="container">
+
+
+<div class="row align-items-center">
+
+
+<div class="col-lg-6">
+
+
+<h2 class="heading">
+
+About Our Platform
+
+</h2>
+
+
+<p class="text mt-4">
+
+
+Our Bank Property Intelligence Platform
+helps financial organizations maintain
+complete visibility over property assets.
+
+
+</p>
+
+
+<p class="text">
+
+
+Administrators can manage teams,
+agents can evaluate properties and
+decision makers can monitor reports
+through a secure role based system.
+
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="col-lg-6">
+
+
+<div class="feature-box">
+
+
+<h4>
+
+Enterprise Property Operations
+
+</h4>
+
+
+<p class="text">
+
+Designed with modern workflows,
+centralized records and real-time
+status tracking for efficient property
+management.
+
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<!-- FEATURES -->
+
+
+<section class="section bg-light">
+
+
+<div class="container">
+
+
+<div class="text-center mb-5">
+
+
+<h2 class="heading">
+
+Platform Capabilities
+
+</h2>
+
+
+</div>
+
+
+
+<div class="row g-4">
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-box">
+
+
+<div class="icon">
+
+🏢
+
+</div>
+
+
+<h5>
+
+Property Management
+
+</h5>
+
+
+<p class="text">
+
+Manage property records,
+details, images and documents
+from one dashboard.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-box">
+
+
+<div class="icon">
+
+📊
+
+</div>
+
+
+<h5>
+
+Reports & Analytics
+
+</h5>
+
+
+<p class="text">
+
+Track property status,
+reviews and decision history
+with detailed insights.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-box">
+
+
+<div class="icon">
+
+🔐
+
+</div>
+
+
+<h5>
+
+Secure Access
+
+</h5>
+
+
+<p class="text">
+
+Role based access control
+for admins, teams and agents.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- PROCESS -->
+
+
+<section class="section">
+
+
+<div class="container">
+
+
+<h2 class="heading text-center mb-5">
+
+How It Works
+
+</h2>
+
+
+
+<div class="row g-4">
+
+
+
+<div class="col-md-4">
+
+
+<div class="step">
+
+
+<div class="number">
+
+01
+
+</div>
+
+
+<h5>
+
+Add Property
+
+</h5>
+
+
+<p class="text">
+
+Property information is added
+into centralized records.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="step">
+
+
+<div class="number">
+
+02
+
+</div>
+
+
+<h5>
+
+Agent Evaluation
+
+</h5>
+
+
+<p class="text">
+
+Agents review properties and
+submit decisions.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="step">
+
+
+<div class="number">
+
+03
+
+</div>
+
+
+<h5>
+
+Bank Decision
+
+</h5>
+
+
+<p class="text">
+
+Management analyzes reports
+and takes action.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- SECURITY -->
+
+
+<section class="container section">
+
+
+<div class="security">
+
+
+<h2>
+
+Built For Banking Operations
+
+</h2>
+
+
+<p class="mt-3">
+
+The platform focuses on secure data handling,
+transparent workflows and efficient collaboration
+between departments.
+
+</p>
+
+
+<div class="row mt-4">
+
+
+<div class="col-md-4">
+
+<h5>
+✔ Role Management
+</h5>
+
+</div>
+
+
+<div class="col-md-4">
+
+<h5>
+✔ Secure Records
+</h5>
+
+</div>
+
+
+<div class="col-md-4">
+
+<h5>
+✔ Activity Tracking
+</h5>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+
+
+
+
+<!-- CTA -->
+
+
+<section class="container pb-5">
+
+
+<div class="cta text-center">
+
+
+<h2>
+
+Modernize Property Management
+
+</h2>
+
+
+<p class="mt-3">
+
+Manage assets smarter with a complete
+digital banking workflow.
+
+</p>
+
+
+<a href="/register"
+class="btn btn-light btn-lg rounded-pill">
+
+
+Create Account
+
+</a>
+
+
+</div>
+
+
+</section>
+
+
+
+{% endblock %}

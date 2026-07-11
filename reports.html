@@ -1,0 +1,1088 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    background:#f6f8fc;
+}
+
+
+/* HEADER */
+
+.page-title{
+    font-weight:700;
+    color:#0f172a;
+}
+
+.page-sub{
+    color:#64748b;
+}
+
+
+
+/* COMMON CARD */
+
+.card{
+    border:none;
+    border-radius:18px;
+    background:white;
+    box-shadow:
+    0 10px 25px rgba(15,23,42,.08);
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+
+
+/* KPI */
+
+.kpi{
+    padding:25px;
+    color:white;
+}
+
+
+.kpi small{
+    opacity:.85;
+}
+
+
+.kpi h3{
+    font-size:34px;
+    margin:10px 0;
+}
+
+
+.total{
+background:linear-gradient(135deg,#0f172a,#334155);
+}
+
+
+.acquire{
+background:linear-gradient(135deg,#0f766e,#14b8a6);
+}
+
+
+.sell{
+background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+}
+
+
+.pending{
+background:linear-gradient(135deg,#b45309,#f59e0b);
+}
+
+
+
+
+
+/* CHART */
+
+.card-header{
+
+background:white;
+border:none;
+font-weight:600;
+font-size:16px;
+color:#334155;
+border-radius:18px 18px 0 0 !important;
+
+}
+
+
+canvas{
+height:330px !important;
+}
+
+
+
+
+
+/* SEARCH */
+
+
+.search-box{
+
+border-radius:12px;
+border:1px solid #cbd5e1;
+
+}
+
+
+
+
+
+/* TABLE */
+
+
+.table{
+
+overflow:hidden;
+border-radius:14px;
+
+}
+
+
+thead{
+
+background:#eef2ff;
+
+}
+
+
+tbody tr:hover{
+
+background:#f8fafc;
+
+}
+
+
+
+
+
+/* SUMMARY */
+
+.summary{
+
+padding:25px;
+
+}
+
+
+.summary h5{
+
+font-weight:700;
+color:#0f172a;
+
+}
+
+
+.status-dot{
+
+height:10px;
+width:10px;
+display:inline-block;
+border-radius:50%;
+background:#10b981;
+
+}
+
+
+
+</style>
+
+
+
+
+
+<div class="container-fluid py-4">
+
+
+
+<!-- HEADER -->
+
+
+<div class="row align-items-center mb-4">
+
+
+<div class="col-md-7">
+
+
+<h2 class="page-title">
+Property Intelligence Dashboard
+</h2>
+
+
+<p class="page-sub">
+Real Estate Asset Monitoring & Analytics
+</p>
+
+
+</div>
+
+
+
+<div class="col-md-5 text-end">
+
+
+<input
+id="reportSearch"
+class="form-control search-box d-inline w-50"
+placeholder="Search district">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- KPI -->
+
+
+
+<div class="row g-4">
+
+
+
+<div class="col-md-3">
+
+<div class="card kpi total">
+
+
+<small>
+Total Properties
+</small>
+
+
+<h3>
+{{total_properties}}
+</h3>
+
+
+<span>
+Assets Portfolio
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="card kpi acquire">
+
+
+<small>
+Acquire
+</small>
+
+
+<h3>
+{{acquire}}
+</h3>
+
+
+<span>
+Approved Assets
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="card kpi sell">
+
+
+<small>
+Sell
+</small>
+
+
+<h3>
+{{sell}}
+</h3>
+
+
+<span>
+Disposed Assets
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="card kpi pending">
+
+
+<small>
+Pending
+</small>
+
+
+<h3>
+{{pending}}
+</h3>
+
+
+<span>
+Under Review
+</span>
+
+
+</div>
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- CHART ROW -->
+
+
+
+<div class="row mt-4 g-4">
+
+
+
+<div class="col-lg-8">
+
+
+<div class="card">
+
+
+<div class="card-header">
+District Wise Properties
+</div>
+
+
+<div class="card-body">
+
+
+<canvas id="districtChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="col-lg-4">
+
+
+<div class="card">
+
+
+<div class="card-header">
+Property Status
+</div>
+
+
+
+<div class="card-body">
+
+
+<canvas id="statusChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- STACKED -->
+
+
+<div class="row mt-4">
+
+
+<div class="col-12">
+
+
+<div class="card">
+
+
+<div class="card-header">
+
+District Status Comparison
+
+</div>
+
+
+
+<div class="card-body">
+
+
+<canvas id="stackedChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SUMMARY -->
+
+
+
+<div class="row mt-4 g-4">
+
+
+
+<div class="col-md-4">
+
+
+<div class="card summary">
+
+
+<h5>
+Portfolio Summary
+</h5>
+
+
+<hr>
+
+
+<p>
+Total Assets :
+<b>{{total_properties}}</b>
+</p>
+
+
+<p>
+Acquire :
+<b>{{acquire}}</b>
+</p>
+
+
+<p>
+Sell :
+<b>{{sell}}</b>
+</p>
+
+
+<p>
+Pending :
+<b>{{pending}}</b>
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="card summary">
+
+
+<h5>
+Coverage
+</h5>
+
+
+<hr>
+
+
+<h2>
+{{district_report|length}}
+</h2>
+
+
+<p>
+Districts Covered
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="card summary">
+
+
+<h5>
+System Status
+</h5>
+
+
+<hr>
+
+
+<p>
+<span class="status-dot"></span>
+ System Active
+</p>
+
+
+<p>
+✔ Data Updated
+</p>
+
+
+<p>
+✔ Reports Available
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- TABLE -->
+
+
+
+<div class="card mt-4">
+
+
+<div class="card-header">
+
+District Property Report
+
+</div>
+
+
+
+<div class="card-body">
+
+
+
+<table class="table table-hover"
+id="reportTable">
+
+
+
+<thead>
+
+<tr>
+
+<th>
+District
+</th>
+
+
+<th>
+Properties
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for row in district_report %}
+
+
+
+<tr>
+
+<td>
+{{row[0]}}
+</td>
+
+
+<td>
+{{row[1]}}
+</td>
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+const districts =
+{{status_data | map(attribute=0)|list|tojson}};
+
+
+const acquire =
+{{status_data | map(attribute=1)|list|tojson}};
+
+
+const sell =
+{{status_data | map(attribute=2)|list|tojson}};
+
+
+const pending =
+{{status_data | map(attribute=3)|list|tojson}};
+
+
+const labels =
+{{district_report|map(attribute=0)|list|tojson}};
+
+
+const values =
+{{district_report|map(attribute=1)|list|tojson}};
+
+
+
+
+
+
+const commonOptions={
+
+
+animation:{
+duration:1200
+},
+
+
+plugins:{
+
+
+tooltip:{
+
+
+backgroundColor:'#0f172a',
+
+padding:12,
+
+cornerRadius:8
+
+
+}
+
+
+}
+
+
+};
+
+
+
+
+
+
+
+
+// BAR
+
+
+
+new Chart(
+document.getElementById('districtChart'),
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:labels,
+
+
+datasets:[{
+
+
+label:'Properties',
+
+data:values,
+
+
+backgroundColor:'#1d4ed8',
+
+hoverBackgroundColor:'#1e40af',
+
+borderRadius:12
+
+
+}]
+
+
+},
+
+
+options:{
+
+...commonOptions,
+
+plugins:{
+
+
+legend:{
+display:false
+}
+
+
+}
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+// DONUT
+
+
+
+new Chart(
+document.getElementById('statusChart'),
+{
+
+
+type:'doughnut',
+
+
+
+data:{
+
+
+labels:[
+'Acquire',
+'Sell',
+'Pending'
+],
+
+
+
+datasets:[{
+
+
+data:[
+{{acquire}},
+{{sell}},
+{{pending}}
+],
+
+
+
+backgroundColor:[
+
+'#0f766e',
+
+'#1d4ed8',
+
+'#d97706'
+
+],
+
+
+borderWidth:0
+
+
+}]
+
+
+},
+
+
+options:{
+
+...commonOptions,
+
+
+cutout:'70%'
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+
+// STACKED
+
+
+
+new Chart(
+document.getElementById('stackedChart'),
+{
+
+
+type:'bar',
+
+
+
+data:{
+
+
+labels:districts,
+
+
+
+datasets:[
+
+
+
+{
+
+label:'Acquire',
+
+data:acquire,
+
+backgroundColor:'#0f766e'
+
+},
+
+
+
+{
+
+label:'Sell',
+
+data:sell,
+
+backgroundColor:'#1d4ed8'
+
+},
+
+
+
+{
+
+label:'Pending',
+
+data:pending,
+
+backgroundColor:'#d97706'
+
+}
+
+
+
+]
+
+
+},
+
+
+
+
+options:{
+
+
+...commonOptions,
+
+
+scales:{
+
+
+x:{
+stacked:true
+},
+
+
+y:{
+stacked:true
+}
+
+
+}
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+// SEARCH
+
+
+
+document
+.getElementById("reportSearch")
+.addEventListener(
+"keyup",
+function(){
+
+
+let value=this.value.toLowerCase();
+
+
+
+document
+.querySelectorAll("#reportTable tbody tr")
+.forEach(row=>{
+
+
+row.style.display =
+row.innerText
+.toLowerCase()
+.includes(value)
+?""
+:"none";
+
+
+
+});
+
+
+
+});
+
+
+
+
+</script>
+
+
+
+{% endblock %}

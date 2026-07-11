@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>
+
+            Saved Properties
+
+        </h2>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Photo</th>
+                        <th>Property</th>
+                        <th>District</th>
+                        <th>City</th>
+                        <th>Cost</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for property in properties %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ property[0] }}
+
+                        </td>
+
+                        <td>
+
+                            <img src="{{ url_for('static',
+                            filename='uploads/' + property[10]) }}"
+                            width="80">
+
+                        </td>
+
+                        <td>
+
+                            {{ property[2] }}
+
+                        </td>
+
+                        <td>
+
+                            {{ property[5] }}
+
+                        </td>
+
+                        <td>
+
+                            {{ property[6] }}
+
+                        </td>
+
+                        <td>
+
+                            ₹ {{ property[8] }}
+
+                        </td>
+
+                        <td>
+
+                            <a href="/admin/property/{{ property[0] }}"
+                               class="btn btn-primary btn-sm">
+
+                               View
+
+                            </a>
+
+                            <a href="/agent/remove-saved/{{ property[0] }}"
+                               class="btn btn-danger btn-sm">
+
+                               Remove
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row mb-4 align-items-center">
+
+    <div class="col-md-4">
+        <h2 class="fw-bold mb-0">My Properties</h2>
+    </div>
+
+    <div class="col-md-4 text-center">
+
+        <div class="position-relative d-inline-block" style="width:260px;">
+
+            <i class="bi bi-search position-absolute"
+               style="left:12px; top:50%; transform:translateY(-50%); color:#6c757d;"></i>
+
+            <input type="text"
+                   id="propertySearch"
+                   class="form-control"
+                   placeholder="Search properties..."
+                   style="padding-left:40px; border-radius:25px;">
+        </div>
+
+    </div>
+
+    <div class="col-md-4 text-end">
+
+        <a href="/team/add_property" class="btn btn-primary">
+            Add Property
+        </a>
+
+    </div>
+
+</div>
+
+
+
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover" id="propertyTable">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Photo</th>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>District</th>
+                        <th>Cost</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+<tbody>
+               {% for property in properties %}
+
+                    <tr>
+                        <td>{{ property[0] }}</td>
+
+
+<td>
+
+
+{% if property[9] %}
+    <img src="{{ url_for('static', filename='uploads/' + property[9]) }}"
+         width="80"
+         height="60"
+         style="object-fit:cover; border-radius:6px;">
+{% else %}
+    No Image
+{% endif %}
+</td>
+
+                        <td>{{ property[1] }}</td>
+
+                        <td>{{ property[2] }}</td>
+
+                        <td>{{ property[5] }}</td>
+
+  <td>
+₹
+{% set price = property[7]|int %}
+{% if price >= 10000000 %}
+    {{ (price / 10000000)|round(2) }} Cr
+{% else %}
+    {{ (price / 100000)|round(2) }} Lakh
+{% endif %}
+</td>
+
+
+                        <td>
+
+                            <a href="/team/edit_property/{{ property[0] }}"
+                               class="btn btn-success btn-sm">
+
+                               Edit
+                            </a>
+
+                            <a href="/team/delete-property/{{ property[0] }}"
+                               class="btn btn-danger btn-sm">
+
+                               Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+document.getElementById("propertySearch").addEventListener("keyup", function () {
+
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#propertyTable tbody tr");
+
+    rows.forEach(function(row) {
+        row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
+    });
+
+});
+</script>
+{% endblock %}

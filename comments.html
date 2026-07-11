@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        Property Comments & Status
+    </h2>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Property</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for comment in comments %}
+
+                    <tr>
+
+                        <td>
+                            {{ comment[0] }}
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                {{ comment[1] }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ comment[2] }}
+                        </td>
+
+                        <td>
+                            {{ comment[3] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

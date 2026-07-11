@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+Single Property
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Property Details</h2>
+
+    <hr>
+
+
+    <table class="table table-bordered">
+
+        <tr>
+            <th>ID</th>
+            <td>{{ property[0] }}</td>
+        </tr>
+
+        <tr>
+            <th>Property Type</th>
+            <td>{{ property[2] }}</td>
+        </tr>
+
+        <tr>
+            <th>Property Name</th>
+            <td>{{ property[1] }}</td>
+        </tr>
+
+        <tr>
+            <th>Contact Person</th>
+            <td>{{ property[12] }}</td>
+        </tr>
+
+        <tr>
+            <th>Mobile</th>
+            <td>{{ property[8] }}</td>
+        </tr>
+
+        <tr>
+            <th>Map Location</th>
+
+            <td>
+
+                <a href="{{ property[10] }}" target="_blank">
+
+                    Open Map
+
+                </a>
+
+            </td>
+        </tr>
+
+        <tr>
+            <th>Photo</th>
+
+          <td>
+
+
+{% if property[9] %}
+    <img src="{{ url_for('static', filename='uploads/' + property[9]) }}"
+         width="80"
+         height="60"
+         style="object-fit:cover; border-radius:6px;">
+{% else %}
+    No Image
+{% endif %}
+</td>
+
+        </tr>
+
+        <tr>
+            <th>District</th>
+            <td>{{ property[3] }}</td>
+        </tr>
+
+        <tr>
+            <th>City</th>
+            <td>{{ property[5] }}</td>
+        </tr>
+
+        <tr>
+            <th>Village</th>
+            <td>{{ property[6] }}</td>
+        </tr>
+
+        <tr>
+            <th>Estimated Cost</th>
+            <td>₹ {{ property[7] }}</td>
+        </tr>
+
+    </table>
+
+</div>
+
+{% endblock %}

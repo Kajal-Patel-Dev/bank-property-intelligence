@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+
+body{
+    background:#f6f8fc;
+}
+
+
+.review-card{
+
+    border:none;
+    border-radius:20px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+
+.card-header{
+
+    background:linear-gradient(
+    135deg,
+    #0f172a,
+    #2563eb
+    ) !important;
+
+    border-radius:20px 20px 0 0 !important;
+
+    color:white;
+
+    padding:20px;
+
+}
+
+
+
+label{
+
+font-weight:600;
+color:#334155;
+
+}
+
+
+
+.form-control,
+.form-select{
+
+border-radius:12px;
+padding:12px;
+
+}
+
+
+
+textarea{
+
+resize:none;
+
+}
+
+
+
+.info-box{
+
+background:#eff6ff;
+border-radius:15px;
+padding:15px;
+color:#1e3a8a;
+
+}
+
+
+
+.btn-submit{
+
+background:#2563eb;
+border:none;
+padding:12px 30px;
+border-radius:25px;
+font-weight:600;
+color:white;
+
+}
+
+
+
+.btn-submit:hover{
+
+background:#1d4ed8;
+
+}
+
+
+
+</style>
+
+
+
+
+<div class="container-fluid py-4">
+
+
+
+<div class="row justify-content-center">
+
+
+<div class="col-md-8">
+
+
+
+<div class="card review-card">
+
+
+
+<div class="card-header">
+
+
+<h4 class="mb-0">
+
+<i class="bi bi-building-check"></i>
+
+Property Evaluation
+
+</h4>
+
+
+<small>
+Agent Property Assessment
+
+</small>
+
+
+</div>
+
+
+
+
+
+
+<div class="card-body p-4">
+
+
+
+<div class="info-box mb-4">
+
+
+<i class="bi bi-info-circle"></i>
+
+Please verify property details and update the bank decision status.
+
+
+</div>
+
+
+
+
+
+<form
+action="/agent/add_comment/{{ property_id }}"
+method="POST">
+
+
+
+
+
+
+<div class="row">
+
+
+
+<div class="col-md-6 mb-3">
+
+
+<label>
+Property Status
+</label>
+
+
+<select
+class="form-select"
+name="status"
+required>
+
+
+<option value="">
+Select Status
+</option>
+
+
+<option value="Acquire">
+Acquire
+</option>
+
+
+<option value="Pending">
+Pending
+</option>
+
+
+<option value="Sell">
+Sell
+</option>
+
+
+<option value="Not Suitable">
+Not Suitable
+</option>
+
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-6 mb-3">
+
+
+<label>
+Risk Level
+</label>
+
+
+<select
+class="form-select"
+name="risk">
+
+
+<option>
+Low
+</option>
+
+<option>
+Medium
+</option>
+
+
+<option>
+High
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label>
+Property Valuation / Estimated Price
+</label>
+
+
+<input
+
+type="number"
+
+class="form-control"
+
+name="valuation"
+
+placeholder="Enter estimated value">
+
+
+</div>
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label>
+Agent Remarks / Notes
+</label>
+
+
+<textarea
+
+class="form-control"
+
+rows="5"
+
+name="comment"
+
+placeholder="Write property analysis here..."
+
+required></textarea>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="text-end">
+
+
+<a href="/agent/search_property"
+class="btn btn-outline-secondary me-2">
+
+Cancel
+
+</a>
+
+
+
+<button
+class="btn-submit">
+
+<i class="bi bi-check-circle"></i>
+
+Submit Review
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+</form>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}

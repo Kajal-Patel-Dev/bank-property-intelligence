@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h2>
+My Assigned Properties
+</h2>
+
+
+
+<div class="card p-3 mt-4">
+
+
+<table class="table">
+
+
+<tr>
+
+<th>
+Property
+</th>
+
+<th>
+Type
+</th>
+
+<th>
+Location
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Date
+</th>
+<th>Action</th>
+</tr>
+
+
+{% for p in properties %}
+
+<tr>
+
+<td>
+{{p[1]}}
+</td>
+
+
+<td>
+{{p[2]}}
+</td>
+
+
+<td>
+{{p[3]}}
+</td>
+
+
+<td>
+
+{% if p[4]=="Assigned" %}
+
+<span class="badge bg-primary">
+{{p[4]}}
+</span>
+
+{% elif p[4]=="Accepted" %}
+
+<span class="badge bg-success">
+{{p[4]}}
+</span>
+
+{% elif p[4]=="Rejected" %}
+
+<span class="badge bg-danger">
+{{p[4]}}
+</span>
+
+{% else %}
+
+<span class="badge bg-warning text-dark">
+{{p[4]}}
+</span>
+
+{% endif %}
+
+</td>
+
+
+<td>
+{{p[5]}}
+</td>
+
+
+
+<td>
+
+{% if p[4]=="Assigned" %}
+
+
+<a href="/agent/update_assignment/{{p[0]}}/Accepted"
+class="btn btn-success btn-sm">
+Accept
+</a>
+
+
+<a href="/agent/update_assignment/{{p[0]}}/Rejected"
+class="btn btn-danger btn-sm">
+Reject
+</a>
+
+
+<a href="/agent/update_assignment/{{p[0]}}/Under Review"
+class="btn btn-warning btn-sm">
+Review
+</a>
+
+
+{% else %}
+
+<span class="badge bg-secondary">
+{{p[4]}}
+</span>
+
+{% endif %}
+
+
+</td>
+
+
+</tr>
+
+{% endfor %}
+
+
+
+
+</table>
+
+
+</div>
+
+
+
+{% endblock %}

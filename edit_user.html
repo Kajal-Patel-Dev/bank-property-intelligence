@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-success text-white">
+
+                    <h4>Edit User</h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+
+                            <label>Name</label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="name"
+                                   value="{{ user[1] }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Email</label>
+
+                            <input type="email"
+                                   class="form-control"
+                                   name="email"
+                                   value="{{ user[2] }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Mobile</label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="mobile"
+                                   value="{{ user[3] }}">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Role</label>
+
+                            <select class="form-control"
+                                    name="role">
+
+                                <option {% if user[5]=='Team Member' %} selected {% endif %}>
+                                    Team Member
+                                </option>
+
+                                <option {% if user[5]=='Agent' %} selected {% endif %}>
+                                    Agent
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <button class="btn btn-success">
+
+                            Update User
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

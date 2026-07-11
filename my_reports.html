@@ -1,0 +1,657 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f6f8fc;
+}
+
+.page-title{
+    font-weight:700;
+    color:#0f172a;
+}
+
+.page-sub{
+    color:#64748b;
+}
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(15,23,42,.08);
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.kpi{
+    padding:22px;
+    color:white;
+}
+
+.kpi h3{
+    font-size:32px;
+    font-weight:700;
+    margin-top:10px;
+}
+
+.total{
+    background:linear-gradient(135deg,#0f172a,#334155);
+}
+
+.res{
+    background:linear-gradient(135deg,#047857,#10b981);
+}
+
+.com{
+    background:linear-gradient(135deg,#b45309,#f59e0b);
+}
+
+.ind{
+    background:linear-gradient(135deg,#dc2626,#ef4444);
+}
+
+.search-box{
+    border-radius:25px;
+    padding:12px 20px;
+}
+
+.table thead{
+    background:#eef2ff;
+}
+
+.summary{
+    padding:25px;
+}
+
+.summary h5{
+    font-weight:700;
+}
+
+.card-header{
+    font-weight:600;
+    background:#0f172a !important;
+    color:white !important;
+}
+
+    .table-card{
+    border-radius:22px;
+    overflow:hidden;
+}
+
+
+canvas{
+    max-height:260px;
+}
+
+
+.btn{
+    font-weight:600;
+}
+
+
+.location{
+    color:#64748b;
+}
+
+
+.table td{
+    border-color:#f1f5f9;
+}
+
+</style>
+
+<div class="container-fluid py-4">
+
+
+<!-- HEADER -->
+
+<div class="row align-items-center mb-4">
+
+    <div class="col-md-7">
+
+        <h2 class="page-title">
+            My Reports
+        </h2>
+
+        <p class="page-sub">
+            Property Performance & Report Analytics
+        </p>
+
+    </div>
+
+    <div class="col-md-5 text-end">
+
+        <div class="mb-2">
+            <h6 class="fw-bold mb-0">
+                Welcome, {{ session.get('name','User') }}
+            </h6>
+
+            <small class="text-muted">
+                {{ today }}
+            </small>
+        </div>
+
+        <input
+            type="text"
+            id="reportSearch"
+            class="form-control search-box"
+            placeholder="Search reports...">
+
+    </div>
+
+</div>
+
+
+
+<!-- KPI CARDS -->
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+
+        <div class="card kpi total">
+
+            <small>Total Properties</small>
+
+            <h3>{{ total_properties }}</h3>
+
+            <span>All Records</span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card kpi res">
+
+            <small>Residential</small>
+
+            <h3>{{ residential }}</h3>
+
+            <span>Homes</span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card kpi com">
+
+            <small>Commercial</small>
+
+            <h3>{{ commercial }}</h3>
+
+            <span>Business Units</span>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card kpi ind">
+
+            <small>Industrial</small>
+
+            <h3>{{ industrial }}</h3>
+
+            <span>Industrial Assets</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row mt-4 g-4">
+
+
+<div class="col-md-5">
+
+<div class="card p-4">
+
+<h5 class="fw-bold">
+Property Category
+</h5>
+
+<canvas id="propertyChart"></canvas>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-7">
+
+<div class="card p-4">
+
+<h5 class="fw-bold">
+Report Overview
+</h5>
+
+<canvas id="growthChart"></canvas>
+
+</div>
+
+</div>
+
+
+</div>
+
+    <!-- TABLE -->
+
+
+<div class="card table-card mt-4">
+
+
+<div class="d-flex justify-content-between p-4">
+
+<h4 class="fw-bold mb-0">
+Property Reports
+</h4>
+<div class="d-flex gap-2">
+
+
+<a href="{{ url_for('team.export_reports') }}"
+class="btn btn-outline-success btn-sm">
+
+<i class="bi bi-file-earmark-excel"></i>
+
+Excel
+
+</a>
+
+
+
+<a href="{{ url_for('team.export_pdf') }}"
+class="btn btn-outline-danger btn-sm">
+
+<i class="bi bi-file-earmark-pdf"></i>
+
+PDF
+
+</a>
+
+
+</div>
+</div>
+
+
+
+<div class="table-responsive">
+
+
+<table
+class="table align-middle mb-0"
+id="reportTable">
+
+
+<thead>
+
+
+<tr>
+
+<th>Property</th>
+
+<th>Type</th>
+
+<th>Location</th>
+
+<th>Cost</th>
+
+<th>Contact</th>
+
+<th>Status</th>
+
+<th>Added By</th>
+
+<th></th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for p in properties %}
+
+
+<tr>
+
+
+<td>
+
+<div class="fw-bold">
+
+{{p[0]}}
+
+</div>
+
+</td>
+
+
+
+<td>
+
+
+{% if p[1]=="Residential" %}
+
+<span class="badge bg-success">
+Residential
+</span>
+
+
+{% elif p[1]=="Commercial" %}
+
+<span class="badge bg-warning text-dark">
+Commercial
+</span>
+
+
+{% else %}
+
+<span class="badge bg-danger">
+{{p[1]}}
+</span>
+
+{% endif %}
+
+
+</td>
+
+
+
+
+<td>
+
+
+{{p[2]}}
+
+
+<div class="location">
+
+{{p[4]}}, {{p[5]}}
+
+</div>
+
+
+</td>
+
+    <td class="price">
+
+₹ {{ "{:,}".format(p[6]|int) }}
+
+</td>
+
+
+
+
+<td>
+
+<i class="bi bi-telephone"></i>
+
+{{p[7]}}
+
+</td>
+
+
+
+
+<td>
+
+
+{% if p[3]=="Available" %}
+
+<span class="badge bg-success">
+Available
+</span>
+
+
+{% elif p[3]=="Pending" %}
+
+<span class="badge bg-warning text-dark">
+Pending
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-danger">
+{{p[3]}}
+</span>
+
+
+{% endif %}
+
+
+</td>
+
+
+
+
+
+<td>
+
+{{p[11]}}
+
+</td>
+
+
+
+
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+
+// SEARCH
+
+document
+.getElementById("reportSearch")
+.addEventListener("keyup",function(){
+
+let val=this.value.toLowerCase();
+
+
+document
+.querySelectorAll("#reportTable tbody tr")
+.forEach(row=>{
+
+
+row.style.display =
+row.innerText.toLowerCase()
+.includes(val)
+? ""
+:"none";
+
+
+});
+
+
+});
+
+
+
+
+
+// PIE CHART
+
+
+new Chart(
+document.getElementById('propertyChart'),
+{
+
+type:'doughnut',
+
+data:{
+
+
+labels:[
+'Residential',
+'Commercial',
+'Industrial'
+],
+
+
+datasets:[{
+
+data:[
+{{residential}},
+{{commercial}},
+{{industrial}}
+],
+
+
+backgroundColor:[
+
+'#10b981',
+'#f59e0b',
+'#ef4444'
+
+]
+
+
+}]
+
+
+},
+
+
+options:{
+
+
+plugins:{
+
+legend:{
+
+position:'bottom'
+
+}
+
+}
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+// BAR CHART
+
+
+new Chart(
+document.getElementById('growthChart'),
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:[
+'Jan',
+'Feb',
+'Mar',
+'Apr',
+'May',
+'Jun'
+],
+
+
+datasets:[{
+
+label:'Reports',
+
+data:[
+3,5,8,6,10,12
+],
+
+backgroundColor:'#2563eb',
+
+borderRadius:10
+
+
+}]
+
+
+},
+
+
+options:{
+
+
+plugins:{
+
+legend:{
+display:false
+}
+
+}
+
+
+}
+
+
+});
+
+
+
+</script>
+
+
+
+{% endblock %}

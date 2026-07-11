@@ -1,0 +1,437 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+
+body{
+    background:#f6f8fc;
+}
+
+
+.page-title{
+    font-weight:700;
+    color:#0f172a;
+}
+
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+
+.kpi{
+    padding:20px;
+    color:white;
+    border-radius:18px;
+}
+
+
+.total{
+background:linear-gradient(135deg,#0f172a,#334155);
+}
+
+
+.sell{
+background:linear-gradient(135deg,#2563eb,#60a5fa);
+}
+
+
+.pending{
+background:linear-gradient(135deg,#d97706,#fbbf24);
+}
+
+
+.acquire{
+background:linear-gradient(135deg,#059669,#34d399);
+}
+
+
+.table thead{
+background:#eef2ff;
+}
+
+
+.search{
+border-radius:25px;
+padding:12px 20px;
+}
+
+
+</style>
+
+
+
+
+<div class="container-fluid py-4">
+
+
+
+<!-- HEADER -->
+
+<div class="row mb-4 align-items-center">
+
+
+<div class="col-md-7">
+
+<h2 class="page-title">
+
+Status History
+
+</h2>
+
+
+<p class="text-muted">
+
+Property review and decision tracking
+
+</p>
+
+
+</div>
+
+
+
+<div class="col-md-5">
+
+<input
+
+id="historySearch"
+
+class="form-control search"
+
+placeholder="Search property/status..."
+
+>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- SUMMARY -->
+
+
+<div class="row g-4 mb-4">
+
+
+
+<div class="col-md-3">
+
+<div class="kpi total">
+
+<small>Total Reviews</small>
+
+<h2>
+
+{{ comments|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-3">
+
+<div class="kpi sell">
+
+<small>Sell</small>
+
+<h2>
+
+{{ comments | selectattr('1','equalto','Sell') | list | length }}
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-3">
+
+<div class="kpi pending">
+
+<small>Pending</small>
+
+<h2>
+
+{{ comments | selectattr('1','equalto','Pending') | list | length }}
+
+</h2>
+
+</div>
+
+</div>
+
+
+
+
+<div class="col-md-3">
+
+<div class="kpi acquire">
+
+<small>Acquire</small>
+
+<h2>
+
+{{ comments | selectattr('1','equalto','Acquire') | list | length }}
+
+</h2>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<div class="card-body">
+
+
+
+<div class="table-responsive">
+
+
+<table class="table align-middle"
+
+id="historyTable">
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Property
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Remarks
+</th>
+
+
+<th>
+Updated Date
+</th>
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% if comments %}
+
+
+{% for row in comments %}
+
+
+<tr>
+
+
+<td>
+
+<strong>
+
+{{row[0]}}
+
+</strong>
+
+</td>
+
+
+
+<td>
+
+
+{% if row[1]=="Acquire" %}
+
+<span class="badge bg-success">
+
+{{row[1]}}
+
+</span>
+
+
+{% elif row[1]=="Pending" %}
+
+<span class="badge bg-warning text-dark">
+
+{{row[1]}}
+
+</span>
+
+
+{% elif row[1]=="Sell" %}
+
+<span class="badge bg-primary">
+
+{{row[1]}}
+
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-danger">
+
+{{row[1]}}
+
+</span>
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+
+<td>
+
+<i class="bi bi-chat-left-text"></i>
+
+{{row[2]}}
+
+
+</td>
+
+
+
+<td>
+
+<i class="bi bi-clock"></i>
+
+{{row[3]}}
+
+
+</td>
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+{% else %}
+
+
+<tr>
+
+<td colspan="4" class="text-center text-muted">
+
+No status history available
+
+</td>
+
+</tr>
+
+
+{% endif %}
+
+
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+document
+.getElementById("historySearch")
+.addEventListener("keyup",function(){
+
+
+let value=this.value.toLowerCase();
+
+
+document
+.querySelectorAll("#historyTable tbody tr")
+.forEach(row=>{
+
+
+row.style.display =
+row.innerText.toLowerCase()
+.includes(value)
+?
+""
+:
+"none";
+
+
+});
+
+
+});
+
+
+</script>
+
+
+
+{% endblock %}

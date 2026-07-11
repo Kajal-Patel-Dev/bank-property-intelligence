@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h4>Add Team Member</h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+
+                            <label>Name</label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="name">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Email</label>
+
+                            <input type="email"
+                                   class="form-control"
+                                   name="email">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Mobile</label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="mobile">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Password</label>
+
+                            <input type="password"
+                                   class="form-control"
+                                   name="password">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Role</label>
+
+                            <select class="form-control"
+                                    name="role">
+
+                                <option value="Team">
+                                    Team Member
+                                </option>
+
+                                <option value="Agent">
+                                    Agent
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <button class="btn btn-primary">
+
+                            Add User
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

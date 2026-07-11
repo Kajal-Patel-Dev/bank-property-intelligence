@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+   <div class="row mb-4 align-items-center">
+
+    <!-- Title -->
+    <div class="col-md-4">
+        <h2 class="fw-bold mb-0">Team Members</h2>
+    </div>
+
+    <!-- Search -->
+    <div class="col-md-4 text-center">
+
+        <div class="position-relative d-inline-block" style="width:250px;">
+
+            <i class="bi bi-search position-absolute"
+               style="left:12px; top:50%; transform:translateY(-50%); color:#6c757d;"></i>
+
+            <input type="text"
+                   id="teamSearch"
+                   class="form-control"
+                   placeholder="Search team members..."
+                   style="padding-left:40px; border-radius:25px;">
+        </div>
+
+    </div>
+
+    <!-- Button -->
+    <div class="col-md-4 text-end">
+
+        <a href="/admin/add_team_member"
+           class="btn btn-primary">
+           Add Team Member
+        </a>
+
+    </div>
+
+</div>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover" id="teamTable">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Role</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <td>{{ user[0] }}</td>
+
+                        <td>{{ user[1] }}</td>
+
+                        <td>{{ user[2] }}</td>
+
+                        <td>{{ user[3] }}</td>
+
+                        <td>
+
+                            <span class="badge bg-primary">
+
+                                {{ user[5] }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="/admin/edit_user/{{ user[0] }}"
+                               class="btn btn-success btn-sm">
+
+                               Edit
+
+                            </a>
+
+                            <a href="/admin/delete_user/{{ user[0] }}"
+                               class="btn btn-danger btn-sm">
+
+                               Delete
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+document.getElementById("teamSearch").addEventListener("keyup", function () {
+
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#teamTable tbody tr");
+
+    rows.forEach(function(row) {
+        row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
+    });
+
+});
+</script>
+
+
+{% endblock %}

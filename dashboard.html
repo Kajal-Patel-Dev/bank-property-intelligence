@@ -1,0 +1,826 @@
+{% extends "base.html" %}
+
+
+{% block sidebar %}
+
+<div class="sidebar">
+
+<h3>
+ Bank System
+</h3>
+
+<hr>
+
+
+<a href="/agent/dashboard">
+<i class="bi bi-speedometer2"></i>
+Dashboard
+</a>
+
+
+<a href="/agent/search_property">
+<i class="bi bi-search"></i>
+Property Search
+</a>
+
+
+
+<a href="/agent/status_history">
+<i class="bi bi-clock-history"></i>
+Status History
+</a>
+
+
+<a href="/agent/profile">
+<i class="bi bi-person"></i>
+Profile
+</a>
+
+
+<a href="/agent/compare_properties">
+<i class="bi bi-columns-gap"></i>
+Compare Properties
+</a>
+
+
+<a href="/agent/gallary">
+<i class="bi bi-images"></i>
+Gallery
+</a>
+
+
+<a href="/agent/assigned_properties">
+
+<i class="bi bi-clipboard-check"></i>
+
+Assigned Properties
+
+</a>
+
+
+<a href="/logout" class="logout">
+
+<i class="bi bi-box-arrow-right"></i>
+Logout
+
+</a>
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block content %}
+
+
+
+<style>
+
+
+body{
+
+background:#f6f8fc;
+
+}
+
+
+
+/* SIDEBAR */
+
+
+.sidebar{
+
+width:250px;
+height:100vh;
+background:#0f172a;
+position:fixed;
+left:0;
+top:0;
+padding:25px;
+}
+
+
+.sidebar h3{
+
+color:white;
+font-weight:700;
+
+}
+
+
+.sidebar a{
+
+display:block;
+padding:13px;
+color:#cbd5e1;
+text-decoration:none;
+border-radius:12px;
+margin:8px 0;
+
+}
+
+
+.sidebar a:hover{
+
+background:#1e293b;
+color:white;
+
+}
+
+
+.logout{
+
+color:#f87171!important;
+
+}
+
+
+
+
+
+/* CARD */
+
+.card{
+
+border:none;
+border-radius:20px;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.08);
+
+transition:0.3s ease;
+
+}
+
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+0 20px 45px rgba(15,23,42,.18);
+
+}
+
+/* KPI */
+
+.kpi{
+
+padding:20px;
+color:white;
+min-height:140px;
+border-radius:18px;
+
+}
+
+
+.kpi h1{
+
+font-size:30px;
+font-weight:700;
+margin:10px 0;
+
+}
+
+
+/* Same Admin Dashboard Colors */
+
+.blue{
+
+background:linear-gradient(135deg,#0f172a,#334155);
+
+}
+
+
+.green{
+
+background:linear-gradient(135deg,#0f766e,#14b8a6);
+
+}
+
+.orange{
+
+background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+
+}
+
+
+.red{
+
+background:linear-gradient(135deg,#b45309,#f59e0b);
+
+}
+
+
+.table thead{
+
+background:#eef2ff;
+
+}
+
+
+
+ #chart{
+    height:220px !important;
+    max-height:220px !important;
+}
+
+
+ .card-header{
+font-weight:600;
+border-radius:18px 18px 0 0!important;
+}
+
+.chart-header{
+color:white;
+}
+</style>
+
+
+
+
+
+
+
+<div class="container-fluid">
+
+
+
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+<div>
+<h2 class="fw-bold">Agent Dashboard</h2>
+<p class="text-muted">Property Evaluation Overview</p>
+</div>
+<div class="d-flex align-items-center gap-3">
+<!-- Notification Bell -->
+<div style="position:relative;">
+<button
+id="notificationBtn"
+class="btn btn-light shadow-sm"
+style="border-radius:50%;width:50px;height:50px;">
+<i class="bi bi-bell fs-5"></i>
+<span
+class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+{{notifications|length}}
+</span>
+
+</button>
+
+<div
+id="notificationMenu"
+class="card shadow"
+style="
+display:none;
+position:absolute;
+right:0;
+top:60px;
+width:320px;
+z-index:999;
+">
+
+<div class="card-header fw-bold">
+Notifications
+</div>
+
+<div class="card-body p-2">
+
+{% if notifications %}
+
+{% for n in notifications %}
+
+<div class="border-bottom p-2">
+
+<b>{{n[0]}}</b>
+
+<br>
+
+<small class="text-muted">
+
+{{n[1]}}
+
+</small>
+
+<br>
+
+<small>
+
+{{n[2]}}
+
+</small>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<p class="text-center text-muted m-2">
+
+No Notifications
+
+</p>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Search -->
+
+<input
+id="search"
+class="form-control"
+placeholder="Search reviews..."
+style="width:280px;border-radius:25px;">
+
+</div>
+
+</div>
+<!-- KPI -->
+
+
+<div class="row g-4">
+
+
+<div class="col-md-3">
+<div class="card kpi blue">
+
+<small>Total Properties</small>
+
+<h1>{{total_properties}}</h1>
+
+<span>
+Assigned Portfolio
+<br>
+<small style="color:#bfdbfe">
+Updated
+</small>
+</span>
+
+</div>
+</div>
+
+
+
+<div class="col-md-3">
+<div class="card kpi green">
+
+<small>Acquire</small>
+
+<h1>{{acquire}}</h1>
+
+<span>
+Approved Properties
+<br>
+<small style="color:#86efac">
+Verified
+</small>
+</span>
+
+</div>
+</div>
+
+
+
+<div class="col-md-3">
+<div class="card kpi orange">
+
+<small>Pending</small>
+
+<h1>{{pending}}</h1>
+
+<span>
+Waiting Review
+<br>
+<small style="color:#fde68a">
+Action Required
+</small>
+</span>
+
+</div>
+</div>
+
+
+
+<div class="col-md-3">
+<div class="card kpi red">
+
+<small>Not Suitable</small>
+
+<h1>{{not_suitable}}</h1>
+
+<span>
+Rejected Assets
+<br>
+<small style="color:#e9d5ff">
+Checked
+</small>
+</span>
+
+</div>
+</div>
+
+
+</div>
+
+
+
+<!-- TABLE -->
+
+
+<div class="card mt-5">
+
+
+
+<div class="card-header bg-dark text-white p-3">
+
+<i class="bi bi-list"></i>
+
+Latest Reviews
+
+
+</div>
+
+
+
+
+<div class="card-body">
+
+
+
+<table class="table table-hover"
+id="reviewTable">
+
+
+<thead>
+
+
+<tr>
+
+<th>
+Property
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Comment
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for row in comments %}
+
+
+<tr>
+
+
+<td class="fw-bold">
+
+{{row[0]}}
+
+</td>
+
+
+
+<td>
+
+
+
+{% if row[1]=="Acquire" %}
+
+
+<span class="badge bg-success">
+{{row[1]}}
+</span>
+
+
+
+{% elif row[1]=="Pending" %}
+
+
+<span class="badge bg-warning text-dark">
+{{row[1]}}
+</span>
+
+
+
+{% else %}
+
+
+<span class="badge bg-danger">
+{{row[1]}}
+</span>
+
+
+{% endif %}
+
+
+</td>
+
+
+
+<td>
+
+{{row[2]}}
+
+</td>
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CHART + PANEL -->
+
+<div class="row mt-5 g-4">
+
+
+<!-- STATUS CHART -->
+
+<div class="col-md-5">
+
+
+<div class="card">
+
+
+<div class="card-header chart-header"
+style="background:#0f766e">
+
+Status Analytics
+
+</div>
+
+
+
+<div class="card-body">
+
+
+<canvas id="chart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- AGENT PANEL -->
+
+
+<div class="col-md-7">
+
+
+
+<div class="card">
+
+
+<div class="card-header chart-header"
+style="background:#1d4ed8">
+
+Agent Panel
+
+</div>
+
+
+
+<div class="card-body">
+
+
+
+<div class="row">
+
+
+
+<div class="col-md-6">
+
+
+<div class="alert alert-primary">
+
+<i class="bi bi-building"></i>
+
+Manage Properties
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="col-md-6">
+
+
+<div class="alert alert-success">
+
+<i class="bi bi-check-circle"></i>
+
+Review Status
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<div class="alert alert-info">
+
+Your property analysis helps bank decision making.
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+<script>
+new Chart(
+document.getElementById("chart"),
+{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+"Acquire",
+"Pending",
+"Not Suitable"
+],
+
+datasets:[{
+
+data:[
+{{acquire}},
+{{pending}},
+{{not_suitable}}
+],
+
+backgroundColor:[
+"#0f766e",
+"#1d4ed8",
+"#b45309"
+],
+
+borderWidth:0
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+cutout:"70%",
+
+plugins:{
+
+legend:{
+position:"bottom"
+}
+
+}
+
+}
+
+});
+
+
+
+document
+.getElementById("search")
+.addEventListener("keyup",function(){
+
+
+let val=this.value.toLowerCase();
+
+
+
+document
+.querySelectorAll("#reviewTable tbody tr")
+.forEach(row=>{
+
+
+row.style.display =
+row.innerText.toLowerCase()
+.includes(val)
+?""
+:"none";
+
+
+});
+
+
+});
+
+
+
+
+ document
+.getElementById("notificationBtn")
+.addEventListener("click", function(){
+
+let menu =
+document.getElementById("notificationMenu");
+
+if(menu.style.display=="block"){
+
+menu.style.display="none";
+
+}else{
+
+menu.style.display="block";
+
+}
+
+});
+
+</script>
+
+
+
+{% endblock %}

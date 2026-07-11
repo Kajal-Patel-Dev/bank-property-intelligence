@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="card p-4">
+
+
+<h3>
+Assign Property
+</h3>
+
+
+<form method="POST">
+
+
+<label>
+Select Agent
+</label>
+
+
+<select name="agent_id"
+class="form-control">
+
+
+{% for a in agents %}
+
+<option value="{{a[0]}}">
+
+{{a[1]}}
+
+</option>
+
+
+{% endfor %}
+
+
+</select>
+
+
+
+<br>
+
+
+<button class="btn btn-primary">
+
+Assign
+
+</button>
+
+
+</form>
+
+
+</div>
+
+
+
+{% endblock %}

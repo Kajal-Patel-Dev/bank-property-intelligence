@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+
+body{
+background:#f6f8fc;
+}
+
+
+.detail-card{
+
+border:none;
+border-radius:22px;
+overflow:hidden;
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+}
+
+
+.property-image{
+
+height:450px;
+width:100%;
+object-fit:cover;
+
+}
+
+
+
+.info-box{
+
+background:#f8fafc;
+border-radius:14px;
+padding:15px;
+margin-bottom:12px;
+
+}
+
+
+.price{
+
+font-size:28px;
+font-weight:700;
+color:#059669;
+
+}
+
+
+.btn{
+
+border-radius:12px;
+font-weight:600;
+
+}
+
+
+</style>
+
+
+
+
+
+<div class="container py-4">
+
+
+
+<div class="card detail-card">
+
+
+
+<div class="row g-0">
+
+
+
+
+
+<!-- IMAGE -->
+
+<div class="col-md-6">
+
+
+
+{% if property[9] %}
+
+
+<img
+
+src="{{url_for('static',
+filename='uploads/'+property[9])}}"
+
+class="property-image">
+
+
+{% else %}
+
+
+<div class="property-image
+d-flex align-items-center justify-content-center bg-light">
+
+
+<i class="bi bi-house fs-1"></i>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DETAILS -->
+
+<div class="col-md-6 p-4">
+
+
+
+<div class="d-flex justify-content-between">
+
+
+<h2 class="fw-bold">
+
+{{property[1]}}
+
+</h2>
+
+
+
+
+{% if property[4]=="Available" %}
+
+<span class="badge bg-success">
+
+Available
+
+</span>
+
+
+{% else %}
+
+<span class="badge bg-warning">
+
+{{property[4]}}
+
+</span>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+<div class="price mt-3">
+
+₹ {{ "{:,}".format(property[7]|int) }}
+
+</div>
+
+
+
+
+
+
+<hr>
+
+
+
+
+<div class="info-box">
+
+<i class="bi bi-building"></i>
+
+<b>Type:</b>
+
+{{property[2]}}
+
+</div>
+
+
+
+
+
+<div class="info-box">
+
+<i class="bi bi-geo-alt"></i>
+
+<b>Location:</b>
+
+{{property[3]}},
+{{property[5]}},
+{{property[6]}}
+
+</div>
+
+
+
+
+
+<div class="info-box">
+
+<i class="bi bi-person"></i>
+
+<b>Contact:</b>
+
+{{property[12]}}
+
+</div>
+
+
+
+
+
+<div class="info-box">
+
+<i class="bi bi-telephone"></i>
+
+<b>Mobile:</b>
+
+{{property[8]}}
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="mt-4">
+
+
+
+<a href="{{property[10]}}"
+
+target="_blank"
+
+class="btn btn-primary">
+
+
+<i class="bi bi-map"></i>
+
+Open Map
+
+</a>
+
+
+
+
+
+<a href="/agent/add_comment/{{property[0]}}"
+class="btn btn-warning">
+
+<i class="bi bi-chat-left-text"></i>
+
+Add Review
+
+</a>
+
+
+<a href="/agent/status_history"
+class="btn btn-outline-dark">
+
+<i class="bi bi-clock-history"></i>
+View Reviews
+
+</a>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+{% endblock %}

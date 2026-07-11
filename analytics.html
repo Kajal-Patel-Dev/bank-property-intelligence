@@ -1,0 +1,879 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+
+body{
+    background:#f8fafc;
+}
+
+
+/* MAIN */
+
+.dashboard{
+    padding:25px;
+}
+
+
+/* HEADER */
+
+.title{
+    font-weight:700;
+    color:#0f172a;
+}
+
+.subtitle{
+    color:#64748b;
+}
+
+
+
+/* CARDS */
+
+
+.kpi-card{
+
+    border:none;
+    border-radius:22px;
+    padding:25px;
+    color:white;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.12);
+
+    transition:.3s;
+}
+
+
+.kpi-card:hover{
+    transform:translateY(-6px);
+}
+
+
+
+.kpi-card h2{
+
+    font-size:38px;
+    margin:10px 0;
+    font-weight:700;
+
+}
+
+
+.kpi-card small{
+
+    opacity:.85;
+
+}
+
+
+
+/* COLORS */
+
+
+.total{
+
+background:linear-gradient(
+135deg,#0f172a,#334155
+);
+
+}
+
+
+.acquire{
+
+background:linear-gradient(
+135deg,#047857,#10b981
+);
+
+}
+
+
+
+.sell{
+
+background:linear-gradient(
+135deg,#1d4ed8,#60a5fa
+);
+
+}
+
+
+
+.pending{
+
+background:linear-gradient(
+135deg,#b45309,#f59e0b
+);
+
+}
+
+
+
+
+
+
+/* CHART */
+
+
+.chart-card{
+
+background:white;
+
+border-radius:22px;
+
+padding:20px;
+
+box-shadow:
+0 10px 25px rgba(15,23,42,.08);
+
+height:100%;
+
+}
+
+
+
+.chart-title{
+
+font-size:17px;
+
+font-weight:700;
+
+color:#334155;
+
+margin-bottom:15px;
+
+}
+
+
+
+canvas{
+
+height:300px!important;
+
+}
+
+
+
+
+
+/* TABLE */
+
+.table-card{
+
+background:white;
+
+border-radius:22px;
+
+padding:20px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.08);
+
+}
+
+
+
+.table thead{
+
+background:#eef2ff;
+
+}
+
+
+</style>
+
+
+
+
+
+<div class="dashboard">
+
+
+
+<!-- HEADER -->
+
+<div class="mb-4">
+
+<h2 class="title">
+Property Intelligence Analytics
+</h2>
+
+<p class="subtitle">
+Real Estate Portfolio Monitoring Dashboard
+</p>
+
+</div>
+
+
+
+
+
+
+<!-- KPI -->
+
+
+<div class="row g-4 mb-4">
+
+
+
+<div class="col-md-3">
+
+<div class="kpi-card total">
+
+<small>Total Properties</small>
+
+<h2>
+{{total_properties}}
+</h2>
+
+<span>
+Total Assets
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="kpi-card acquire">
+
+<small>Acquire</small>
+
+<h2>
+{{acquire}}
+</h2>
+
+<span>
+Approved
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="kpi-card sell">
+
+<small>Sell</small>
+
+<h2>
+{{sell}}
+</h2>
+
+<span>
+Disposed
+</span>
+
+</div>
+
+</div>
+
+
+
+
+
+
+<div class="col-md-3">
+
+<div class="kpi-card pending">
+
+<small>Pending</small>
+
+<h2>
+{{pending}}
+</h2>
+
+<span>
+Review
+</span>
+
+</div>
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- CHARTS ROW 1 -->
+
+
+<div class="row g-4">
+
+
+
+<div class="col-md-6">
+
+<div class="chart-card">
+
+
+<div class="chart-title">
+Property Status
+</div>
+
+
+<canvas id="statusChart"></canvas>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="col-md-6">
+
+
+<div class="chart-card">
+
+
+<div class="chart-title">
+District Wise Properties
+</div>
+
+
+<canvas id="districtChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- CHART ROW 2 -->
+
+
+
+<div class="row g-4 mt-1">
+
+
+
+<div class="col-md-6">
+
+
+<div class="chart-card">
+
+
+<div class="chart-title">
+Monthly Growth
+</div>
+
+
+<canvas id="monthlyChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="col-md-6">
+
+
+<div class="chart-card">
+
+
+<div class="chart-title">
+This Month vs Last Month
+</div>
+
+
+<canvas id="compareChart"></canvas>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- TABLE -->
+
+
+<div class="table-card mt-4">
+
+
+<h5 class="mb-3">
+District Report
+</h5>
+
+
+
+<table class="table table-hover">
+
+
+<thead>
+
+<tr>
+
+<th>
+District
+</th>
+
+<th>
+Properties
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for row in district_data %}
+
+
+<tr>
+
+<td>
+{{row[0]}}
+</td>
+
+
+<td>
+{{row[1]}}
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+// STATUS PIE
+
+
+new Chart(
+document.getElementById('statusChart'),
+{
+
+
+type:'doughnut',
+
+
+data:{
+
+
+labels:[
+'Acquire',
+'Pending',
+'Sell',
+'Not Suitable'
+],
+
+
+datasets:[{
+
+data:[
+
+{{acquire}},
+{{pending}},
+{{sell}},
+{{not_suitable}}
+
+],
+
+
+backgroundColor:[
+
+'#10b981',
+'#f59e0b',
+'#3b82f6',
+'#ef4444'
+
+],
+
+
+borderWidth:0
+
+}]
+
+
+},
+
+
+
+options:{
+
+
+cutout:'70%',
+
+
+plugins:{
+
+legend:{
+
+position:'bottom'
+
+}
+
+}
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+// DISTRICT
+
+
+new Chart(
+
+document.getElementById('districtChart'),
+
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:
+
+{{district_labels|tojson}},
+
+
+datasets:[{
+
+
+label:'Properties',
+
+
+data:
+
+{{district_counts|tojson}},
+
+
+
+backgroundColor:'#2563eb',
+
+
+borderRadius:10
+
+
+
+}]
+
+},
+
+
+
+options:{
+
+
+plugins:{
+
+legend:{
+display:false
+}
+
+},
+
+
+scales:{
+
+
+y:{
+
+beginAtZero:true
+
+}
+
+
+}
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+
+
+// MONTHLY
+
+
+
+let monthly = {{monthly_data|tojson}};
+
+
+let months =
+monthly.map(x=>x[0]);
+
+
+let counts =
+monthly.map(x=>x[1]);
+
+
+
+
+
+new Chart(
+
+document.getElementById('monthlyChart'),
+
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:months,
+
+
+datasets:[{
+
+label:'Properties Added',
+
+data:counts,
+
+backgroundColor:'#8b5cf6',
+
+borderRadius:10,
+
+barThickness:100
+
+}]
+
+
+},
+
+
+options:{
+
+
+scales:{
+
+
+y:{
+
+beginAtZero:true
+
+}
+
+}
+
+
+}
+
+
+});
+
+
+
+
+
+
+
+
+
+
+// COMPARE
+
+
+
+new Chart(
+
+document.getElementById('compareChart'),
+
+{
+
+
+type:'bar',
+
+
+data:{
+
+
+labels:[
+
+'This Month',
+
+'Last Month'
+
+],
+
+
+
+datasets:[{
+
+
+data:[
+
+{{this_month_count}},
+
+{{last_month_count}}
+
+],
+
+
+
+backgroundColor:[
+
+'#2563eb',
+
+'#94a3b8'
+
+],
+
+
+
+borderRadius:10
+
+
+}]
+
+
+},
+
+
+
+options:{
+
+
+plugins:{
+
+
+legend:{
+display:false
+}
+
+},
+
+
+scales:{
+
+
+y:{
+
+beginAtZero:true
+
+}
+
+
+}
+
+
+
+}
+
+
+});
+
+
+
+
+
+</script>
+
+
+{% endblock %}

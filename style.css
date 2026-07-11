@@ -1,0 +1,65 @@
+body{
+
+    background:#f4f6f9;
+
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.sidebar{
+
+    min-height:100vh;
+
+    background:#0d1b3d;
+}
+
+.sidebar a{
+
+    display:block;
+
+    color:white;
+
+    padding:14px 20px;
+
+    text-decoration:none;
+
+    transition:0.3s;
+}
+
+.sidebar a:hover{
+
+    background:#1c2f5c;
+
+    padding-left:28px;
+}
+
+.logo{
+
+    background:#08132d;
+
+    border-bottom:1px solid #23355f;
+}
+
+.content-area{
+
+    background:#f4f6f9;
+}
+
+.card{
+
+    border-radius:14px;
+}
+
+.card-header{
+
+    font-weight:bold;
+}
+
+.table{
+
+    background:white;
+}
+
+.btn{
+
+    border-radius:8px;
+}

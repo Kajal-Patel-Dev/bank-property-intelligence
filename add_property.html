@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+            <h4>Add Property</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" action="/team/add_property"  enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label>Property Type</label>
+
+                        <select class="form-control" name="property_type">
+
+                            <option>Land</option>
+                            <option>Residential</option>
+                            <option>Commercial</option>
+                            <option>Industrial</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Property Name</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="property_name">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Contact Person</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="contact_person_name">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Mobile Number</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="mobile">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>District</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="district">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>City</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="city">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Village / Area</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="village">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Estimated Cost</label>
+
+                        <input type="number"
+                               class="form-control"
+                               name="estimated_cost">
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label>Google Map Link</label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="map_location">
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label>Property Photo</label>
+
+                        <input type="file"
+                               class="form-control"
+                               name="photo">
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Add Property
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

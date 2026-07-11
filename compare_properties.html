@@ -1,0 +1,420 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+
+body{
+background:#f6f8fc;
+}
+
+
+.page-title{
+
+font-weight:700;
+color:#0f172a;
+
+}
+
+
+.property-card{
+
+border:none;
+border-radius:22px;
+overflow:hidden;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+
+.property-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+0 18px 40px rgba(0,0,0,.15);
+
+}
+
+
+
+
+.property-img{
+
+height:230px;
+width:100%;
+object-fit:cover;
+
+}
+
+
+
+
+.price-box{
+
+background:#ecfdf5;
+
+color:#047857;
+
+font-size:22px;
+
+font-weight:700;
+
+padding:10px;
+
+border-radius:12px;
+
+}
+
+
+
+.info{
+
+background:#f8fafc;
+
+border-radius:12px;
+
+padding:12px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.btn{
+
+border-radius:12px;
+
+font-weight:600;
+
+}
+
+
+
+.badge{
+
+padding:8px 14px;
+
+}
+
+
+</style>
+
+
+
+
+
+
+<div class="container-fluid py-4">
+
+
+
+<div class="row mb-4 align-items-center">
+
+
+<div class="col-md-8">
+
+
+<h2 class="page-title">
+
+Compare Properties
+
+</h2>
+
+
+<p class="text-muted">
+
+Compare property details before making decision
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="col-md-4 text-end">
+
+
+<span class="badge bg-primary">
+
+{{properties|length}} Properties
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="row g-4">
+
+
+
+
+
+{% if properties %}
+
+
+
+
+{% for property in properties %}
+
+
+
+<div class="col-xl-4 col-md-6">
+
+
+
+<div class="card property-card h-100">
+
+
+
+
+
+{% if property[10] %}
+
+
+<img
+
+src="{{url_for('static',
+filename='uploads/' + property[10])}}"
+
+class="property-img">
+
+
+{% else %}
+
+
+<div class="property-img d-flex align-items-center justify-content-center bg-light">
+
+<i class="bi bi-house fs-1 text-secondary"></i>
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+<div class="card-body p-4">
+
+
+
+
+
+<div class="d-flex justify-content-between mb-2">
+
+
+<h5 class="fw-bold">
+
+{{property[2]}}
+
+</h5>
+
+
+
+{% if property[4]=="Available" %}
+
+
+<span class="badge bg-success">
+
+Available
+
+</span>
+
+
+{% elif property[4]=="Pending" %}
+
+
+<span class="badge bg-warning text-dark">
+
+Pending
+
+</span>
+
+
+{% else %}
+
+
+<span class="badge bg-danger">
+
+{{property[4]}}
+
+</span>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+<div class="price-box mb-3">
+
+
+₹ {{ "{:,}".format(property[8]|int) }}
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="info">
+
+
+<i class="bi bi-building"></i>
+
+<strong>
+Type:
+</strong>
+
+{{property[1]}}
+
+
+</div>
+
+
+
+
+
+
+<div class="info">
+
+
+<i class="bi bi-geo-alt"></i>
+
+
+<strong>
+Location:
+</strong>
+
+{{property[5]}},
+{{property[6]}}
+
+
+</div>
+
+
+
+
+
+
+
+<div class="info">
+
+
+<i class="bi bi-map"></i>
+
+
+<strong>
+Village:
+</strong>
+
+{{property[7]}}
+
+
+</div>
+
+
+
+
+
+
+<a href="{{ url_for('agent.property_details', id=property[0]) }}"
+   class="btn btn-primary w-100 mt-3">
+
+    <i class="bi bi-eye"></i>
+    View Full Details
+
+</a>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+
+{% else %}
+
+
+
+<div class="col-12">
+
+
+<div class="alert alert-info text-center">
+
+
+No properties available for comparison
+
+
+</div>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}
